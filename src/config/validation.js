@@ -1,7 +1,7 @@
 const MIN_STRING_NAME = 2;
 const MAX_STRING_NAME = 50;
 const MIN_TEXT_NAME = 2;
-const MAX_TEXT_NAME = 2;
+const MAX_TEXT_NAME = 300;
 
 module.exports = {
   MIN_STRING_NAME,

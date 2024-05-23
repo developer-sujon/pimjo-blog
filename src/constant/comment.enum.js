@@ -3,7 +3,7 @@ const allCommentStatus = {
   PRIVATE: "PRIVATE",
 };
 
-const commentStatus = Object.keys(allRoles);
+const commentStatus = Object.keys(allCommentStatus);
 
 module.exports = {
   commentStatus,

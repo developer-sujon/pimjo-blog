@@ -1,12 +1,13 @@
 const { Schema, model } = require("mongoose");
-const { MAX_STRING_NAME, MIN_STRING_NAME } = require("../config/validation");
+const { validationConfig } = require("../config");
+const { schemaOption } = require("../database");
 
 const userSchema = new Schema(
   {
     name: {
       type: String,
-      minLength: MAX_STRING_NAME,
-      maxLength: MIN_STRING_NAME,
+      minLength: validationConfig.MIN_STRING_NAME,
+      maxLength: validationConfig.MAX_STRING_NAME,
       required: true,
     },
     email: {
@@ -19,7 +20,7 @@ const userSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true, id: true, versionKey: false }
+  schemaOption
 );
 
 const User = model("User", userSchema);

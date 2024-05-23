@@ -1,24 +1,25 @@
 const { Schema, model } = require("mongoose");
-const { commentStatus, allCommentStatus } = require("../config");
+const { commentStatus, allCommentStatus } = require("../constant");
 const { DATABASE_CONSTANTS } = require("../constant");
-const { MIN_TEXT_NAME, MAX_TEXT_NAME } = require("../config/validation");
+const { validationConfig } = require("../config");
+const { schemaOption } = require("../database");
 
 const commentSchema = new Schema(
   {
-    authorId: {
+    author: {
       type: Schema.ObjectId,
       required: true,
       ref: DATABASE_CONSTANTS.USER,
     },
-    articleId: {
+    article: {
       type: Schema.ObjectId,
       required: true,
       ref: DATABASE_CONSTANTS.ARTICLE,
     },
     description: {
       type: String,
-      minLength: MIN_TEXT_NAME,
-      maxLength: MAX_TEXT_NAME,
+      minLength: validationConfig.MIN_TEXT_NAME,
+      maxLength: validationConfig.MAX_TEXT_NAME,
       required: true,
     },
     status: {
@@ -27,7 +28,7 @@ const commentSchema = new Schema(
       default: allCommentStatus.PUBLIC,
     },
   },
-  { timestamps: true, id: true, versionKey: false }
+  schemaOption
 );
 
 const Comment = model(DATABASE_CONSTANTS.COMMENT, commentSchema);

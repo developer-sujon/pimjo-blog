@@ -1,33 +1,29 @@
 const { Schema, model } = require("mongoose");
 const { DATABASE_CONSTANTS } = require("../constant");
-const {
-  MIN_TEXT_NAME,
-  MAX_TEXT_NAME,
-  MIN_STRING_NAME,
-  MAX_STRING_NAME,
-} = require("../config/validation");
+const { validationConfig } = require("../config");
+const { schemaOption } = require("../database");
 
 const articleSchema = new Schema(
   {
-    authorId: {
+    author: {
       type: Schema.ObjectId,
       required: true,
       ref: DATABASE_CONSTANTS.USER,
     },
     title: {
       type: String,
-      minLength: MIN_STRING_NAME,
-      maxLength: MAX_STRING_NAME,
+      minLength: validationConfig.MIN_STRING_NAME,
+      maxLength: validationConfig.MAX_STRING_NAME,
       required: true,
     },
     description: {
       type: String,
-      minLength: MIN_TEXT_NAME,
-      maxLength: MAX_TEXT_NAME,
+      minLength: validationConfig.MIN_TEXT_NAME,
+      maxLength: validationConfig.MAX_TEXT_NAME,
       required: true,
     },
   },
-  { timestamps: true, id: true, versionKey: false }
+  schemaOption
 );
 
 const Article = model(DATABASE_CONSTANTS.ARTICLE, articleSchema);

@@ -72,6 +72,9 @@ yarn install
 Create an .env file in the root directory of the project and configure the necessary environment variables. Here's an example of the required variables:
 
 ```env
+#port
+PORT=8080
+
 # MongoDB Configuration
 DB_USERNAME=testuser
 DB_PASSWORD=testpassword

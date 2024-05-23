@@ -1,6 +1,6 @@
 module.exports = {
   DATABASE_CONNECTION: "DATABASE_CONNECTION",
-  USER: "USER",
-  ARTICLE: "ARTICLE",
-  COMMENT: "COMMENT",
+  USER: "User",
+  ARTICLE: "Article",
+  COMMENT: "Comment",
 };
