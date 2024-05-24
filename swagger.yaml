@@ -6,7 +6,7 @@ info:
   contact:
     name: Pimjo Blog API Team
     url: https://example.com
-    email: support@example.com
+    email: muhammad.sujon.cse@gmail.com
 servers:
   - description: Development server
     url: http://localhost:8080

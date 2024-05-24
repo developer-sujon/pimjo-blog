@@ -100,6 +100,13 @@ yarn start:start
 
 ## 7. Access the Application
 
+demo credentials
+
+```bash
+email: user@example.com
+password: 123456@
+```
+
 Open a web browser and go to the following URL to access the locally running Pimjo Blog API application health:
 
 ```
