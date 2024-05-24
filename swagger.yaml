@@ -51,7 +51,7 @@ paths:
     post:
       tags:
         - "Auth"
-      description: create a new account
+      description: Create a new account
       summary: create a new account
       requestBody:
         content:

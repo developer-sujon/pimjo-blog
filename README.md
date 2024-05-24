@@ -88,10 +88,6 @@ ACCESS_TOKEN_SECRET=your-secret-key
 
 ## 5. Run the Database Seed Command
 
-```bash
-yarn start:seed
-```
-
 ## 6. Start the Application
 
 ```bash
@@ -100,7 +96,7 @@ yarn start:start
 
 ## 7. Access the Application
 
-demo credentials
+Demo Credentials
 
 ```bash
 email: user@example.com
@@ -110,7 +106,7 @@ password: 123456@
 Open a web browser and go to the following URL to access the locally running Pimjo Blog API application health:
 
 ```
-http://localhost:8080/api/v1/health
+http://localhost:8080/health
 
 ```
 
