@@ -1,9 +1,12 @@
+const { DATABASE_CONSTANTS } = require("../../constant");
+const { DATABASE_CONNECTION } = require("../../constant/database.constants");
 const {
   authController,
   articleController,
   commentController,
 } = require("../../controllers");
-const { authenticate } = require("../../middlewares");
+const { authenticate, ownership } = require("../../middlewares");
+const { isValidId } = require("../../middlewares/isValidMongoId");
 
 const router = require("express").Router();
 
@@ -20,16 +23,36 @@ router
 
 router
   .route("/api/v1/articles/:id")
-  .get(articleController.findSingleItem)
-  .patch(authenticate, articleController.updateItem)
-  .delete(authenticate, articleController.removeItem);
+  .get(isValidId, articleController.findSingleItem)
+  .patch(
+    isValidId,
+    authenticate,
+    ownership(DATABASE_CONSTANTS.ARTICLE),
+    articleController.updateItem
+  )
+  .delete(
+    isValidId,
+    authenticate,
+    ownership(DATABASE_CONSTANTS.ARTICLE),
+    articleController.removeItem
+  );
 //ownership("Article"),
 
 // Comment routes
 router
   .route("/api/v1/comments/:id")
-  .post(authenticate, commentController.create)
-  .patch(authenticate, commentController.updateItem)
-  .delete(authenticate, commentController.removeItem);
+  .post(isValidId, authenticate, commentController.create)
+  .patch(
+    isValidId,
+    authenticate,
+    ownership(DATABASE_CONSTANTS.COMMENT),
+    commentController.updateItem
+  )
+  .delete(
+    isValidId,
+    authenticate,
+    ownership(DATABASE_CONSTANTS.COMMENT),
+    commentController.removeItem
+  );
 
 module.exports = router;

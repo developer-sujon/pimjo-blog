@@ -14,11 +14,17 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.use((err, _req, res, next) => {
-  // TODO: format error
-  console.log(err);
+// send back a 404 error for any unknown api request
+app.use((req, res, next) => {
+  next(new error.NOT_FOUND());
+});
+
+// Error-handling middleware
+app.use((err, req, res, next) => {
+  console.error(err); // Log the error for debugging purposes
   res.status(err.status || 500).json({
-    message: err.message,
+    statusCode: err.status || 500,
+    message: err.message || "Internal Server Error",
     errors: err.errors,
   });
 });

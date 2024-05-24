@@ -32,6 +32,9 @@ const create = async ({ description, authorId, articleId }) => {
 
     await article.save({ session });
     await comment.save({ session });
+
+    await session.commitTransaction(); // for committing all operations
+
     return comment.toJSON();
   } catch (e) {
     await session.abortTransaction(); // for rollback the operations
@@ -84,7 +87,7 @@ const removeItem = async (id) => {
       (commentId) => commentId.toString() !== id
     );
 
-    article.save({ session });
+    await article.save({ session });
     await Comment.findByIdAndDelete(id, { session });
 
     await session.commitTransaction(); // for committing all operations
@@ -97,8 +100,19 @@ const removeItem = async (id) => {
   }
 };
 
+const checkOwnership = async ({ resourceId, userId }) => {
+  const comment = await Comment.findById(resourceId);
+  if (!comment) throw error.notFound();
+
+  if (comment._doc.author.toString() === userId) {
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   create,
   update,
   removeItem,
+  checkOwnership,
 };

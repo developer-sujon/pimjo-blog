@@ -1,13 +1,5 @@
-const authService = require("./auth.service");
-const tokenService = require("./token.service");
-const userService = require("./user.service");
-const articleService = require("./article.service");
-const commentService = require("./comment.service");
-
-module.exports = {
-  authService,
-  tokenService,
-  userService,
-  articleService,
-  commentService,
-};
+module.exports.authService = require("./auth.service");
+module.exports.tokenService = require("./token.service");
+module.exports.userService = require("./user.service");
+module.exports.articleService = require("./article.service");
+module.exports.commentService = require("./comment.service");

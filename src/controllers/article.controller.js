@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const { defaultsConfig } = require("../config");
 const { articleService } = require("../services");
 const { query } = require("../utils");
@@ -134,10 +133,14 @@ const updateItem = async (req, res, next) => {
 };
 
 const removeItem = async (req, res, next) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  await articleService.removeItem(id, session);
-  res.status(204).end();
+    await articleService.removeItem(id);
+    res.status(204).end();
+  } catch (e) {
+    next(e);
+  }
 };
 
 module.exports = {

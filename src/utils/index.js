@@ -1,9 +1,3 @@
-const query = require("./query");
-const error = require("./error");
-const hashing = require("./hashing");
-
-module.exports = {
-  query,
-  error,
-  hashing,
-};
+module.exports.query = require("./query");
+module.exports.error = require("./error");
+module.exports.hashing = require("./hashing");

@@ -147,7 +147,7 @@ const removeItem = async (id) => {
 
     // Asynchronously Delete all associated comments
     await Comment.deleteMany({ article: id }, { session });
-    Article.findByIdAndDelete(id, { session });
+    await Article.findByIdAndDelete(id, { session });
 
     await session.commitTransaction(); // for committing all operations
     return article.toJSON();
@@ -159,6 +159,16 @@ const removeItem = async (id) => {
   }
 };
 
+const checkOwnership = async ({ resourceId, userId }) => {
+  const article = await Article.findById(resourceId);
+  if (!article) throw error.notFound();
+
+  if (article._doc.author.toString() === userId) {
+    return true;
+  }
+  return false;
+};
+
 module.exports = {
   create,
   count,
@@ -166,4 +176,5 @@ module.exports = {
   findSingleItem,
   updateOrCreate,
   removeItem,
+  checkOwnership,
 };
