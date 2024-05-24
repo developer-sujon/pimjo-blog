@@ -3,6 +3,7 @@ const { commentStatus, allCommentStatus } = require("../constant");
 const { DATABASE_CONSTANTS } = require("../constant");
 const { validationConfig } = require("../config");
 const { schemaOption } = require("../database");
+const toJson = require("@meanie/mongoose-to-json");
 
 const commentSchema = new Schema(
   {
@@ -30,6 +31,9 @@ const commentSchema = new Schema(
   },
   schemaOption
 );
+
+// add plugin that converts mongoose to json
+commentSchema.plugin(toJson);
 
 const Comment = model(DATABASE_CONSTANTS.COMMENT, commentSchema);
 module.exports = Comment;

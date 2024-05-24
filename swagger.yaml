@@ -65,6 +65,8 @@ paths:
               properties:
                 name:
                   type: string
+                  minLength: 2
+                  maxLength: 50
                   example: Mohamamd Sujon
                 email:
                   type: string
@@ -73,6 +75,8 @@ paths:
                 password:
                   type: string
                   format: password
+                  minLength: 2
+                  maxLength: 50
                   example: pass1234@
                 # $ref: "#components/schemas/SignupDto"
       responses:
@@ -140,6 +144,8 @@ paths:
                   example: muhammad.sujon.cse@gmail.com
                 password:
                   type: string
+                  minLength: 2
+                  maxLength: 50
                   format: password
                   example: pass1234@
               required: [email, password]
@@ -265,8 +271,12 @@ paths:
               properties:
                 title:
                   type: string
+                  minLength: 2
+                  maxLength: 50
                 description:
                   type: string
+                  minLength: 2
+                  maxLength: 300
       responses:
         "201":
           description: Article created successfully.
@@ -314,10 +324,10 @@ paths:
             type: string
         - in: query
           name: expand
-          description: expand comments array with
+          description: expand articles array with
           schema:
             type: string
-            example: "author comments"
+            example: "author,comments"
       responses:
         "200":
           description: Article retrieved successfully.
@@ -388,10 +398,13 @@ paths:
           application/json:
             schema:
               properties:
-                name:
+                title:
                   type: string
+                  minLength: 2
+                  maxLength: 50
                 description:
                   type: string
+                  maxLength: 300
       responses:
         "200":
           description: Article updated successfully.
@@ -445,7 +458,7 @@ paths:
         "500":
           $ref: "#/components/responses/400"
 
-  /api/v1/comments:
+  /api/v1/comments/{id}:
     post:
       summary: Create a Comment
       description: Create a new comment.
@@ -453,6 +466,13 @@ paths:
         - bearerAuth: []
       tags:
         - Comments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the article to create a comment.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -463,6 +483,8 @@ paths:
               properties:
                 description:
                   type: string
+                  minLength: 2
+                  maxLength: 300
       responses:
         "201":
           description: Comment created successfully.
@@ -515,10 +537,9 @@ paths:
           application/json:
             schema:
               properties:
-                name:
-                  type: string
                 description:
                   type: string
+                  maxLength: 500
       responses:
         "200":
           description: Comment updated successfully.
@@ -585,7 +606,7 @@ components:
       schema:
         type: integer
         format: int32
-        example: 2
+        example: 1
     limitParam:
       in: query
       name: limit
@@ -615,7 +636,6 @@ components:
       description: Search keyword for filtering items by name.
       schema:
         type: string
-        example: title
     idPathParam:
       in: path
       name: id

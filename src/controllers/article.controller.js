@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { defaultsConfig } = require("../config");
 const { articleService } = require("../services");
 const { query } = require("../utils");
@@ -12,12 +13,10 @@ const create = async (req, res, next) => {
       author: req.user.id,
     });
 
-    delete article._id;
-
     const response = {
       code: 201,
       message: "Article Created Successfully",
-      data: { ...article },
+      data: article,
       links: {
         self: `/articles/${article.id}`,
         author: `/articles/${article.id}/author`,
@@ -106,8 +105,45 @@ const findSingleItem = async (req, res, next) => {
   }
 };
 
+const updateItem = async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const { article, code } = await articleService.updateOrCreate(id, {
+      title: req.body.title,
+      description: req.body.description,
+      author: req.user,
+    });
+
+    const response = {
+      code,
+      message:
+        code === 200
+          ? "Article updated successfully"
+          : "Article created successfully",
+      data: article,
+      links: {
+        self: `/articles/${article.id}`,
+      },
+    };
+
+    res.status(code).json(response);
+  } catch (e) {
+    next(e);
+  }
+};
+
+const removeItem = async (req, res, next) => {
+  const { id } = req.params;
+
+  await articleService.removeItem(id, session);
+  res.status(204).end();
+};
+
 module.exports = {
   create,
   findAllItems,
   findSingleItem,
+  updateItem,
+  removeItem,
 };
