@@ -474,7 +474,7 @@ paths:
           required: true
           description: ID of the article to create a comment.
           schema:
-            type: string
+            type: integer
       requestBody:
         required: true
         content:

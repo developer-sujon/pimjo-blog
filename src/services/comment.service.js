@@ -14,7 +14,7 @@ const create = async ({ description, authorId, articleId }) => {
 
   const article = await prisma.article.findUnique({
     where: {
-      id: articleId,
+      id: Number(articleId),
     },
   });
   if (!article) {
