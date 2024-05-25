@@ -1,7 +1,7 @@
 # Pimjo Blog API
 
 **Version:** 1.0.0  
-**Date:** 05/May/2024
+**Date:** 25/May/2024
 
 ## Table of Contents
 
