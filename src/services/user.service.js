@@ -1,8 +1,12 @@
-const User = require("../schema/user.schema");
+const prisma = require("../prisma");
 const { error } = require("../utils");
 
 const findUserByEmail = async (email) => {
-  const user = await User.findOne({ email });
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
   return user ? user : false;
 };
 
@@ -15,10 +19,13 @@ const createUser = async ({ name, email, password }) => {
   if (!name || !email || !password)
     throw error.badRequest("Invalid parameters");
 
-  const user = new User({ name, email, password });
-  await user.save();
-
-  return { ...user._doc, id: user.id };
+  return await prisma.user.create({
+    data: {
+      name,
+      email,
+      password,
+    },
+  });
 };
 
 module.exports = {

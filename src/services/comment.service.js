@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose");
 const { Comment, Article } = require("../schema");
 const { error } = require("../utils");
+const prisma = require("../prisma");
 
 /**
  * Create a new comment
@@ -8,39 +9,16 @@ const { error } = require("../utils");
  * @returns Promise<Comment>
  */
 const create = async ({ description, authorId, articleId }) => {
-  const session = await mongoose.startSession();
+  if (!description || !authorId || !articleId)
+    throw badRequest("Invalid parameters");
 
-  try {
-    session.startTransaction(); // for starting a new transaction
-
-    if (!description || !authorId || !articleId)
-      throw badRequest("Invalid parameters");
-
-    const article = await Article.findById(articleId);
-    if (!article) {
-      throw error.notFound("Article not found");
-    }
-
-    const comment = new Comment({
-      description,
-      author: authorId,
-      article: articleId,
-    });
-
-    // Asynchronously update a article comments
-    article.comments.push(comment.id);
-
-    await article.save({ session });
-    await comment.save({ session });
-
-    await session.commitTransaction(); // for committing all operations
-
-    return comment.toJSON();
-  } catch (e) {
-    await session.abortTransaction(); // for rollback the operations
-    throw e;
-  } finally {
-    session.endSession();
+  const article = await prisma.article.findUnique({
+    where: {
+      id: articleId,
+    },
+  });
+  if (!article) {
+    throw error.notFound("Article not found");
   }
 };
 

@@ -1,6 +1,7 @@
 const tokenService = require("./token.service");
 const userService = require("./user.service");
 const { error, hashing } = require("../utils");
+const prisma = require("../prisma");
 
 const register = async ({ name, email, password }) => {
   const hasUser = await userService.userExist(email);
@@ -16,7 +17,12 @@ const register = async ({ name, email, password }) => {
 };
 
 const login = async ({ email, password }) => {
-  const user = await userService.findUserByEmail(email);
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
   if (!user) {
     throw error.badRequest("Invalid Credentials");
   }
