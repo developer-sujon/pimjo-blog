@@ -137,13 +137,13 @@ http://localhost:8080/docs
 ## 7.1. Access the Application production
 
 ```
-http://45.77.47.252:8080/health
+http://64.176.83.202:8080/health
 
 ```
 
 You can also explore the Swagger API documentation at:
 
 ```
-http://45.77.47.252:8080/docs
+http://64.176.83.202:8080/docs
 
 ```

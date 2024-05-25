@@ -9,7 +9,7 @@ info:
     email: muhammad.sujon.cse@gmail.com
 servers:
   - description: Production server
-    url: http://45.77.47.252:8080
+    url: http://64.176.83.202:8080
   - description: Development server
     url: http://localhost:8080
 tags:
