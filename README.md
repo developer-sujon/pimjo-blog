@@ -75,12 +75,13 @@ Create an .env file in the root directory of the project and configure the neces
 #port
 PORT=8080
 
-# MongoDB Configuration
+# MongoDB Database Configuration
 DB_USERNAME=testuser
 DB_PASSWORD=testpassword
 DB_CONNECTION_URL=mongodb://<username>:<password>@localhost:27017
 DB_URL_QUERY=retryWrites=true&w=majority
-DB_NAME=pimjo-blog-api
+APP_DB_NAME=pimjo-blog-api
+TEST_DB_NAME=pimjo-blog-test-api
 
 # JWT Secret Key
 ACCESS_TOKEN_SECRET=your-secret-key
@@ -90,8 +91,22 @@ ACCESS_TOKEN_SECRET=your-secret-key
 
 ## 6. Start the Application
 
+## 6.1. Test the Application with jest
+
 ```bash
-yarn start:start
+yarn start:test
+```
+
+## 6.2. Start the Application with nodemon
+
+```bash
+yarn start:dev
+```
+
+## 6.3. Start the Application with pm2
+
+```bash
+yarn start:prod
 ```
 
 ## 7. Access the Application
@@ -103,7 +118,9 @@ email: user@example.com
 password: 123456@
 ```
 
-Open a web browser and go to the following URL to access the locally running Pimjo Blog API application health:
+Open a web browser and go to the following URL to access the locally/production running Pimjo Blog API application health:
+
+## 7.1. Access the Application locally
 
 ```
 http://localhost:8080/health
@@ -114,5 +131,19 @@ You can also explore the Swagger API documentation at:
 
 ```
 http://localhost:8080/docs
+
+```
+
+## 7.1. Access the Application production
+
+```
+http://45.77.47.252:8080/health
+
+```
+
+You can also explore the Swagger API documentation at:
+
+```
+http://45.77.47.252:8080/docs
 
 ```

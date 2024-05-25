@@ -8,6 +8,8 @@ info:
     url: https://example.com
     email: muhammad.sujon.cse@gmail.com
 servers:
+  - description: Production server
+    url: http://45.77.47.252:8080
   - description: Development server
     url: http://localhost:8080
 tags:
