@@ -1,5 +1,3 @@
-const { default: mongoose } = require("mongoose");
-const { Comment, Article } = require("../schema");
 const { error } = require("../utils");
 const prisma = require("../prisma");
 
@@ -12,14 +10,12 @@ const create = async ({ description, authorId, articleId }) => {
   if (!description || !authorId || !articleId)
     throw badRequest("Invalid parameters");
 
-  const article = await prisma.article.findUnique({
-    where: {
-      id: Number(articleId),
-    },
-  });
+  const article = await prisma.article.findUnique({ where: { id: articleId } });
   if (!article) {
     throw error.notFound("Article not found");
   }
+
+  return prisma.comment.create({ data: { description, authorId, articleId } });
 };
 
 /**
@@ -29,14 +25,26 @@ const create = async ({ description, authorId, articleId }) => {
  */
 
 const update = async (id, { description }) => {
-  const comment = await Comment.findById(id);
+  const comment = await prisma.comment.findUnique({
+    where: {
+      id,
+    },
+  });
 
   if (!comment) {
-    throw error.notFound();
+    throw new Error("Comment not found");
   }
 
-  comment.description = description;
-  return await comment.save();
+  const updatedComment = await prisma.comment.update({
+    where: {
+      id: id,
+    },
+    data: {
+      description: description,
+    },
+  });
+
+  return updatedComment;
 };
 
 /**
@@ -45,44 +53,21 @@ const update = async (id, { description }) => {
  * @returns Promise<Comment>
  */
 const removeItem = async (id) => {
-  const session = await mongoose.startSession();
-
-  try {
-    session.startTransaction(); // for starting a new transaction
-
-    const comment = await Comment.findById(id);
-    if (!comment) {
-      throw error.notFound();
-    }
-
-    // Asynchronously remove article associated comments
-    const article = await Article.findOne(comment.article);
-    if (!article) {
-      throw error.notFound("Article not found");
-    }
-
-    article.comments = article.comments.filter(
-      (commentId) => commentId.toString() !== id
-    );
-
-    await article.save({ session });
-    await Comment.findByIdAndDelete(id, { session });
-
-    await session.commitTransaction(); // for committing all operations
-    return comment.toJSON();
-  } catch (e) {
-    await session.abortTransaction(); // for rollback the operations
-    throw e;
-  } finally {
-    session.endSession();
+  const comment = await prisma.comment.delete({ where: { id } });
+  if (!comment) {
+    throw error.notFound();
   }
+
+  return comment;
 };
 
 const checkOwnership = async ({ resourceId, userId }) => {
-  const comment = await Comment.findById(resourceId);
+  const comment = await prisma.comment.findUnique({
+    where: { id: resourceId },
+  });
   if (!comment) throw error.notFound();
 
-  if (comment._doc.author.toString() === userId) {
+  if (comment.authorId === userId) {
     return true;
   }
   return false;

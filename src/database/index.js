@@ -1,7 +1,9 @@
-const connectDB = require("./connectDB");
-const schemaOption = {
-  timestamps: true,
-  versionKey: false,
+const getDatabaseUrl = (dbUrl) => {
+  if (!dbUrl) {
+    throw new Error("DB_CONNECTION_URL environment variable is not set.");
+  }
+
+  return dbUrl;
 };
 
-module.exports = { connectDB, schemaOption };
+module.exports.getDatabaseUrl = getDatabaseUrl;

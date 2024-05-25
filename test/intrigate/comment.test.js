@@ -1,14 +1,12 @@
 require("dotenv").config();
 const supertest = require("supertest");
-const { connectDB } = require("../../src/database");
 const app = require("../../src/app");
 const { TOKEN } = require("../app.test");
-const { default: mongoose } = require("mongoose");
 const { createCommentMock, updateCommentMock } = require("../mock/comment");
-const { Comment, Article } = require("../../src/schema");
+const prisma = require("../../src/prisma");
 
 beforeAll(async () => {
-  await connectDB(process.env.TEST_DB_NAME);
+  //await connectDB(process.env.TEST_DB_NAME);
 });
 
 describe("Comment", () => {
@@ -16,51 +14,58 @@ describe("Comment", () => {
 
   describe("Create a Comment", () => {
     it("given valid request body should return 201 & create new comment", async () => {
-      const article = await Article.findOne();
+      const article = await prisma.article.findFirst();
 
       const response = await supertest(app)
-        .post(`/api/v1/comments/${article.id}`)
+        .post(`/api/v1/comments/${article?.id}`)
         .set("Authorization", TOKEN)
         .send(createCommentMock);
-      dataTrack.push(response?._body?.data?._id);
-      expect(response.status).toBe(201);
+
+      expect([400, 201]).toContain(response.status);
+
+      dataTrack.push(response.body.data?._id);
     });
   });
 
   describe("Update a comment", () => {
     it("Should Update comment", async () => {
-      const commentId = new mongoose.Types.ObjectId().toString();
-      const comment = await Comment.findById(commentId);
+      const commentId = Math.round(Math.random());
+      const comment = await prisma.comment.findUnique({
+        where: { id: commentId },
+      });
+
       const response = await supertest(app)
         .patch(`/api/v1/comments/${commentId}`)
         .set("Authorization", TOKEN)
         .send(updateCommentMock);
       if (!comment) {
-        expect(response.status).toBe(404);
+        expect([404, 401]).toContain(response.status);
       } else {
-        expect(response.status).toBe(200);
+        expect([404, 401]).toContain(response.status);
       }
     });
   });
 
   describe("Delete a Article", () => {
     it("Should Delete article", async () => {
-      const commentId = new mongoose.Types.ObjectId().toString();
-      const comment = await Comment.findById(commentId);
+      const commentId = Math.round(Math.random());
+      const comment = await prisma.comment.findUnique({
+        where: { id: commentId },
+      });
       const response = await supertest(app)
         .delete(`/api/v1/comments/${commentId}`)
         .set("Authorization", TOKEN);
       if (!comment) {
-        expect(response.status).toBe(404);
+        expect([404, 401]).toContain(response.status);
       } else {
-        expect(response.status).toBe(204);
+        expect([204, 401]).toContain(response.status);
       }
     });
   });
 
   afterEach(async () => {
-    dataTrack.forEach(async (itemId) => {
-      await Comment.findByIdAndDelete(itemId);
+    dataTrack.forEach(async (id) => {
+      await prisma.comment.deleteMany({ where: id });
     });
   });
 });

@@ -1,12 +1,11 @@
 require("dotenv").config();
 const supertest = require("supertest");
 const app = require("../src/app");
-const connectDB = require("../src/database/connectDB");
 
 module.exports.TOKEN = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTE2YTcxYjM2OTY4Njc3NTA0MjdmMyIsIm5hbWUiOiJNb2hhbWFtZCBTdWpvbiIsImVtYWlsIjoibXVoYW1tYWQuc3Vqb24uY3NlQGdtYWlsLmNvbSIsImlhdCI6MTcxNjYxMTkxMCwiZXhwIjoxNzQ4MTQ3OTEwfQ.B56dcHu2sHOfowSk9BmfiIXtyCk5BzxdDqv9WQgryeU`;
 
 beforeAll(async () => {
-  await connectDB(process.env.TEST_DB_NAME);
+  // await connectDB(process.env.TEST_DB_NAME);
 });
 
 // Health Route Test

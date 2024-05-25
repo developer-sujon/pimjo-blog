@@ -7,7 +7,7 @@ const create = async (req, res, next) => {
     const comment = await commentService.create({
       description,
       authorId: req.user.id,
-      articleId: req.params.id,
+      articleId: +req.params.id,
     });
 
     const response = {
@@ -29,7 +29,7 @@ const updateItem = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const comment = await commentService.update(id, {
+    const comment = await commentService.update(+id, {
       description: req.body.description,
     });
 
@@ -49,7 +49,7 @@ const removeItem = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    await commentService.removeItem(id);
+    await commentService.removeItem(+id);
     res.status(204).end();
   } catch (e) {
     next(e);

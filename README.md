@@ -1,7 +1,7 @@
 # Pimjo Blog API
 
 **Version:** 1.0.0  
-**Date:** 05/May/2024
+**Date:** 23/May/2024
 
 ## Table of Contents
 
@@ -75,13 +75,8 @@ Create an .env file in the root directory of the project and configure the neces
 #port
 PORT=8080
 
-# MongoDB Database Configuration
-DB_USERNAME=testuser
-DB_PASSWORD=testpassword
-DB_CONNECTION_URL=mongodb://<username>:<password>@localhost:27017
-DB_URL_QUERY=retryWrites=true&w=majority
-APP_DB_NAME=pimjo-blog-api
-TEST_DB_NAME=pimjo-blog-test-api
+# Postgres Configuration
+DB_CONNECTION_URL="postgresql://postgres:postgres@localhost:5433/pimjo-blog-api?schema=public"
 
 # JWT Secret Key
 ACCESS_TOKEN_SECRET=your-secret-key
@@ -131,19 +126,5 @@ You can also explore the Swagger API documentation at:
 
 ```
 http://localhost:8080/docs
-
-```
-
-## 7.1. Access the Application production
-
-```
-http://64.176.83.202:8080/health
-
-```
-
-You can also explore the Swagger API documentation at:
-
-```
-http://64.176.83.202:8080/docs
 
 ```

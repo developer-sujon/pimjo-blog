@@ -10,13 +10,12 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "DATABASE_URL"
+  url      = env("DB_CONNECTION_URL")
 }
 
 enum CommentStatus {
   PUBLIC
   PRIVATE
-  ARCHIVED
 }
 
 
@@ -25,10 +24,10 @@ model User {
   name        String 
   email       String     @unique
   password    String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
   articles    Article[]  
   comments    Comment[] 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 
@@ -39,7 +38,9 @@ model Comment {
   article     Article    @relation(fields: [articleId], references: [id], onDelete: Cascade)
   articleId   Int
   description String     @db.Text
-  status      CommentStatus
+  status      CommentStatus @default(PUBLIC)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Article {
@@ -49,5 +50,7 @@ model Article {
   title       String    
   description String     @db.Text
   comments    Comment[] 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 

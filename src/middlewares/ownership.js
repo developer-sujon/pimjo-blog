@@ -8,7 +8,7 @@ const ownership =
     try {
       if (model === DATABASE_CONSTANTS.ARTICLE) {
         const isOwner = await articleService.checkOwnership({
-          resourceId: req.params.id,
+          resourceId: +req.params.id,
           userId: req.user.id,
         });
 
@@ -18,7 +18,7 @@ const ownership =
         return next(error.authorizationError());
       } else if (model === DATABASE_CONSTANTS.COMMENT) {
         const isOwner = await commentService.checkOwnership({
-          resourceId: req.params.id,
+          resourceId: +req.params.id,
           userId: req.user.id,
         });
 

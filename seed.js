@@ -1,14 +1,15 @@
-const { User } = require("./src/schema");
+const prisma = require("./src/prisma");
 
 const seedUser = () => {
-  const user = new User({
-    name: "example",
-    email: "user@example.com",
-    password: "123456@",
+  const user = prisma.user.create({
+    data: {
+      name: "example",
+      email: "user@example.com",
+      password: "123456@",
+    },
   });
-  user.save();
 
-  return user.toJSON();
+  return user;
 };
 
 module.exports = { seedUser };

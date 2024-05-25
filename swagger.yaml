@@ -8,8 +8,6 @@ info:
     url: https://example.com
     email: muhammad.sujon.cse@gmail.com
 servers:
-  - description: Production server
-    url: http://64.176.83.202:8080
   - description: Development server
     url: http://localhost:8080
 tags:
@@ -323,7 +321,9 @@ paths:
           required: true
           description: ID of the article to retrieve.
           schema:
-            type: string
+            type: integer
+            format: int32
+            example: 1
         - in: query
           name: expand
           description: expand articles array with
@@ -393,7 +393,9 @@ paths:
           required: true
           description: ID of the article to update.
           schema:
-            type: string
+            type: integer
+            format: int32
+            example: 1
       requestBody:
         required: true
         content:
@@ -445,7 +447,9 @@ paths:
           required: true
           description: ID of the article to delete.
           schema:
-            type: string
+            type: integer
+            format: int32
+            example: 1
       responses:
         "204":
           description: Article deleted successfully.
@@ -475,6 +479,8 @@ paths:
           description: ID of the article to create a comment.
           schema:
             type: integer
+            format: int32
+            example: 1
       requestBody:
         required: true
         content:
@@ -532,7 +538,9 @@ paths:
           required: true
           description: ID of the comment to update.
           schema:
-            type: string
+            type: integer
+            format: int32
+            example: 1
       requestBody:
         required: true
         content:
@@ -580,7 +588,9 @@ paths:
           required: true
           description: ID of the comment to delete.
           schema:
-            type: string
+            type: integer
+            format: int32
+            example: 1
       responses:
         "204":
           description: Comment deleted successfully.
@@ -623,8 +633,8 @@ components:
       description: Type of sort, either asc or desc (default desc).
       schema:
         type: string
-        enum: [asc, dsc]
-        example: dsc
+        enum: [asc, desc]
+        example: desc
     sortByParam:
       in: query
       name: sort_by

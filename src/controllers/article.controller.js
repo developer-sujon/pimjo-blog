@@ -9,7 +9,7 @@ const create = async (req, res, next) => {
     const article = await articleService.create({
       title,
       description,
-      author: req.user.id,
+      authorId: req.user.id,
     });
 
     const response = {
@@ -88,7 +88,7 @@ const findSingleItem = async (req, res, next) => {
   const expand = req.query.expand || "";
 
   try {
-    const article = await articleService.findSingleItem({ id, expand });
+    const article = await articleService.findSingleItem({ id: +id, expand });
     const response = {
       data: article,
       links: {
@@ -108,10 +108,10 @@ const updateItem = async (req, res, next) => {
   const { id } = req.params;
 
   try {
-    const { article, code } = await articleService.updateOrCreate(id, {
+    const { article, code } = await articleService.updateOrCreate(+id, {
       title: req.body.title,
       description: req.body.description,
-      author: req.user,
+      authorId: req.user.id,
     });
 
     const response = {
@@ -136,7 +136,7 @@ const removeItem = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    await articleService.removeItem(id);
+    await articleService.removeItem(+id);
     res.status(204).end();
   } catch (e) {
     next(e);

@@ -24,12 +24,12 @@ const login = async ({ email, password }) => {
   });
 
   if (!user) {
-    throw error.badRequest("Invalid Credentials");
+    throw error.authenticationError("Invalid Credentials");
   }
 
   const matched = await hashing.hashMatched(password, user.password);
   if (!matched) {
-    throw error.badRequest("Invalid Credentials");
+    throw error.authenticationError("Invalid Credentials");
   }
 
   const payload = {

@@ -1,9 +1,8 @@
 require("dotenv").config();
 const http = require("http");
 const app = require("./app");
-const { connectDB } = require("./database");
 const { seedUser } = require("../seed");
-const { User } = require("./schema");
+const prisma = require("./prisma");
 
 const server = http.createServer(app);
 
@@ -15,14 +14,14 @@ const main = async () => {
       console.log(`Express server is listening at http://localhost:${port}`);
     });
 
-    // const findUser = await User.findOne();
+    const findUser = await prisma.user.findFirst();
 
-    // if (!findUser) {
-    //   const newUser = await seedUser();
-    //   console.log(
-    //     `Seed user creation successful for email ${newUser.email} passed ${newUser.password}`
-    //   );
-    // }
+    if (!findUser) {
+      const newUser = await seedUser();
+      console.log(
+        `Seed user creation successful for email ${newUser.email} passed ${newUser.password}`
+      );
+    }
   } catch (e) {
     console.log("Database Error");
     console.log(e);
