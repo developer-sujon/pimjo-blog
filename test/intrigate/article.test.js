@@ -2,43 +2,49 @@ require("dotenv").config();
 const supertest = require("supertest");
 const { createArticleMock, updateArticleMock } = require("../mock/article");
 const app = require("../../src/app");
-const { TOKEN } = require("../app.test");
 const prisma = require("../../src/prisma");
+const { seedUser, mockUser } = require("../../seed");
+
+let AUTH_TOKEN = "";
 
 beforeAll(async () => {
-  //await connectDB(process.env.TEST_DB_NAME);
+  await seedUser(prisma);
+  const response = await supertest(app).post("/api/v1/auth/signin").send({
+    email: mockUser.email,
+    password: mockUser.password,
+  });
+  AUTH_TOKEN = response?.body?.data?.access_token;
 });
 
 describe("Article", () => {
   const dataTrack = [];
-
   describe("Create a Article", () => {
     it("given valid request body should return 201 & create new article", async () => {
       const response = await supertest(app)
         .post("/api/v1/articles")
-        .set("Authorization", TOKEN)
+        .set("authorization", `bearer ${AUTH_TOKEN}`)
         .send(createArticleMock);
-      dataTrack.push(response?._body?.data?._id);
+      dataTrack.push(response?.body?.data?._id);
       expect([201, 401]).toContain(response.status);
     });
   });
 
-  describe("given no authorized header", () => {
+  describe("Given no authorized header", () => {
     it("should return 401 response", async () => {
       const response = await supertest(app)
         .post("/api/v1/articles")
-        .set("Authorization", "")
+        .set("authorization", "")
         .send(createArticleMock);
       expect(response.status).toBe(401);
     });
   });
 
   describe("Get all Articles", () => {
-    describe("given authorized header", () => {
+    describe("Given authorized header", () => {
       it("should return 200 response", async () => {
         const response = await supertest(app)
           .get("/api/v1/articles")
-          .set("Authorization", TOKEN);
+          .set("authorization", `bearer ${AUTH_TOKEN}`);
         expect(response.status).toBe(200);
       });
     });
@@ -46,14 +52,14 @@ describe("Article", () => {
 
   describe("Get single Article", () => {
     it("should return 200 response", async () => {
-      const articleId = Math.round(Math.random());
+      const articleId = Math.round(Math.random() + 1);
       const article = await prisma.article.findUnique({
         where: { id: articleId },
       });
 
       const response = await supertest(app)
         .get(`/api/v1/articles/${articleId}`)
-        .set("Authorization", TOKEN);
+        .set("authorization", `bearer ${AUTH_TOKEN}`);
 
       if (!article) {
         expect(response.status).toBe(404);
@@ -63,16 +69,16 @@ describe("Article", () => {
     });
   });
 
-  describe("Update a Article", () => {
-    it("Should Update Article", async () => {
-      const articleId = Math.round(Math.random());
+  describe("Update an Article", () => {
+    it("should update an article", async () => {
+      const articleId = Math.round(Math.random() + 1);
       const article = await prisma.article.findUnique({
         where: { id: articleId },
       });
 
       const response = await supertest(app)
         .patch(`/api/v1/articles/${articleId}`)
-        .set("Authorization", TOKEN)
+        .set("authorization", `bearer ${AUTH_TOKEN}`)
         .send(updateArticleMock);
       if (!article) {
         expect([404, 401]).toContain(response.status);
@@ -82,16 +88,17 @@ describe("Article", () => {
     });
   });
 
-  describe("Delete a Article", () => {
-    it("Should Delete article", async () => {
-      const articleId = Math.round(Math.random());
+  describe("Delete an Article", () => {
+    it("should delete an article", async () => {
+      const articleId = Math.round(Math.random() + 1);
       const article = await prisma.article.findUnique({
         where: { id: articleId },
       });
 
       const response = await supertest(app)
         .delete(`/api/v1/articles/${articleId}`)
-        .set("Authorization", TOKEN);
+        .set("authorization", `bearer ${AUTH_TOKEN}`);
+
       if (!article) {
         expect([404, 401]).toContain(response.status);
       } else {

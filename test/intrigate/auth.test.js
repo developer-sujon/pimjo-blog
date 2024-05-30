@@ -4,10 +4,6 @@ const app = require("../../src/app");
 const { registerUserMock, loginUserMock } = require("../mock/auth");
 const prisma = require("../../src/prisma");
 
-beforeAll(async () => {
-  // await connectDB(process.env.TEST_DB_NAME);
-});
-
 describe("Auth", () => {
   const dataTrack = [];
 
