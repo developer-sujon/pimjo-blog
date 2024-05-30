@@ -6,7 +6,8 @@
     "start": "node ./src/index.js",
     "start:dev": "nodemon --ignore ./old/db --exec node ./src/index.js",
     "start:prod": "pm2 restart ecosystem.config.json",
-    "test": "jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "cache": "jest --clearCache"
   },
   "repository": "https://github.com/developer-sujon/pimjo-blog.git",

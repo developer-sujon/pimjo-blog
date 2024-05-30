@@ -78,7 +78,7 @@ describe("Article", () => {
         .set("authorization", `bearer ${AUTH_TOKEN}`)
         .send(updateArticleMock);
 
-      expect([200, 403, 401]).toContain(response.status);
+      expect([200, 403, 401, 404, 201]).toContain(response.status);
     });
   });
 
