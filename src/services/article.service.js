@@ -9,6 +9,9 @@ const prisma = require("../prisma");
  */
 const create = async ({ title, description, authorId }) => {
   if (!title || !authorId) throw badRequest("Invalid parameters");
+
+  console.log(await prisma.article.count());
+
   return await prisma.article.create({
     data: {
       title,

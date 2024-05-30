@@ -9,16 +9,4 @@ const prisma = new PrismaClient({
   },
 });
 
-(async function checkDatabaseConnection() {
-  try {
-    await prisma.$connect();
-    console.log("Prisma successfully connected to the database.");
-  } catch (e) {
-    console.error("Error connecting to the database:", e);
-    throw e;
-  } finally {
-    await prisma.$disconnect();
-  }
-})();
-
 module.exports = prisma;

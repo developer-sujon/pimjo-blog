@@ -19,3 +19,7 @@ describe("GET /health", () => {
     });
   });
 });
+
+const authTest = require("./intrigate/auth.test");
+// const articleTest = require("./intrigate/article.test");
+// const commentTest = require("./intrigate/comment.test");

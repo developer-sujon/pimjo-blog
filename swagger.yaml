@@ -6,7 +6,7 @@ info:
   contact:
     name: Pimjo Blog API Team
     url: https://example.com
-    email: muhammad.sujon.cse@gmail.com
+    email: user@example.com
 servers:
   - description: Development server
     url: http://localhost:8080
@@ -71,7 +71,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: muhammad.sujon.cse@gmail.com
+                  example: user@example.com
                 password:
                   type: string
                   format: password
@@ -141,7 +141,7 @@ paths:
                 email:
                   type: string
                   format: email
-                  example: muhammad.sujon.cse@gmail.com
+                  example: user@example.com
                 password:
                   type: string
                   minLength: 2
@@ -846,7 +846,7 @@ components:
         email:
           type: string
           format: email
-          example: muhammad.sujon.cse@gmail.com
+          example: user@example.com
         password:
           type: string
           format: password
@@ -860,7 +860,7 @@ components:
         email:
           type: string
           format: email
-          example: muhammad.sujon.cse@gmail.com
+          example: user@example.com
         password:
           type: string
           format: password

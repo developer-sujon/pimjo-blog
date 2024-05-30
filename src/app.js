@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 
 // Error-handling middleware
 app.use((err, req, res, next) => {
-  console.error(err); // Log the error for debugging purposes
+  console.log(err); // Log the error for debugging purposes
   res.status(err.status || 500).json({
     statusCode: err.status || 500,
     message: err.message || "Internal Server Error",

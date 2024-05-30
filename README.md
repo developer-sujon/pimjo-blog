@@ -16,7 +16,7 @@ This simple blog API application allows users to create accounts, log in, and pu
 
 ### 2 Customer Support
 
-For support, please contact [muhammad.sujon.cse@gmail.com](mailto:muhammad.sujon.cse@gmail.com).
+For support, please contact [user@example.com](mailto:user@example.com).
 
 ### 3 Api Documentation
 
@@ -82,7 +82,11 @@ DB_CONNECTION_URL="postgresql://postgres:postgres@localhost:5433/pimjo-blog-api?
 ACCESS_TOKEN_SECRET=your-secret-key
 ```
 
-## 5. Run the Database Seed Command
+## 5. Apply migrations to the development database
+
+```bash
+npx prisma migrate dev
+```
 
 ## 6. Start the Application
 
@@ -110,7 +114,7 @@ Demo Credentials
 
 ```bash
 email: user@example.com
-password: 123456@
+password: pass1234@
 ```
 
 Open a web browser and go to the following URL to access the locally/production running Pimjo Blog API application health:
