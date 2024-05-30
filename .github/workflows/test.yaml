@@ -1,0 +1,30 @@
+name: Push to Test Server
+
+on:
+  push:
+    branches:
+      - prisma-postgresql
+
+jobs:
+  push-to-test-server:
+    name: Push to Test Server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "v18.18.0"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Config env
+        run: |
+          cat << EOF > .env
+          PORT=${{ secrets.PORT }}
+          DB_CONNECTION_URL=${{ secrets.DB_CONNECTION_URL }}
+          ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
+          EOF
+      - name: Test Application
+        run: yarn test
+      - name: Run Application
+        run: yarn start:prod

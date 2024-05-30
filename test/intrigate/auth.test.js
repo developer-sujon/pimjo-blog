@@ -5,8 +5,6 @@ const { registerUserMock, loginUserMock } = require("../mock/auth");
 const prisma = require("../../src/prisma");
 
 describe("Auth", () => {
-  const dataTrack = [];
-
   describe("Create a new account", () => {
     it("should return 201 & create a new user given a valid request body", async () => {
       const existingUser = await prisma.user.findUnique({
@@ -44,12 +42,6 @@ describe("Auth", () => {
       } else {
         expect([200, 400]).toContain(response.status);
       }
-    });
-  });
-
-  afterEach(async () => {
-    dataTrack.forEach(async (id) => {
-      await prisma.user.deleteMany({ where: { id } });
     });
   });
 });
